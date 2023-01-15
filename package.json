@@ -4,12 +4,15 @@
   "license": "Apache-2.0",
   "version": "0.0.0",
   "packageManager": "npm@8.12.2",
+  "exports": {
+    ".": "dist/utils.js"
+  },
   "scripts": {
     "lint": "eslint --ext .ts,.html . --ignore-path .gitignore && prettier \"**/*.ts\" --check --ignore-path .gitignore",
     "format": "eslint --ext .ts,.html . --fix --ignore-path .gitignore && prettier \"**/*.ts\" --write --ignore-path .gitignore",
     "test": "npm run build && wtr --coverage",
     "test:watch": "npm run build && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wtr --watch\"",
-    "build": "tsc -b && tsc foundation.ts --declaration --emitDeclarationOnly --outDir dist"
+    "build": "tsc -b && tsc utils.ts --declaration --emitDeclarationOnly --outDir dist"
   },
   "dependencies": {
     "lit": "^2.0.2"
