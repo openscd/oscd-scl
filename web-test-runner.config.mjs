@@ -1,11 +1,15 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
+/* eslint-disable import/no-extraneous-dependencies */
 import { playwrightLauncher } from '@web/test-runner-playwright';
+
+import {esbuildPlugin} from '@web/dev-server-esbuild';
 
 const filteredLogs = ['Running in dev mode', 'lit-html is in dev mode'];
 
 export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
   /** Test files to run */
-  files: 'dist/**/*.spec.js',
+  files: '**/*.spec.ts',
+  
+  plugins: [esbuildPlugin({ ts: true })],
 
   /** Resolve bare module imports */
   nodeResolve: {

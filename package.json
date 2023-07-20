@@ -1,18 +1,27 @@
 {
-  "name": "oscd-scl",
+  "name": "@openscd/oscd-scl",
   "description": "Function library for SCL type XML files",
   "license": "Apache-2.0",
-  "version": "0.0.0",
-  "packageManager": "npm@8.12.2",
-  "exports": {
-    ".": "dist/utils.js"
+  "author": "Dan and Jay",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "/dist/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OpenSCD/oscd-scl.git"
   },
   "scripts": {
     "lint": "eslint --ext .ts,.html . --ignore-path .gitignore && prettier \"**/*.ts\" --check --ignore-path .gitignore",
     "format": "eslint --ext .ts,.html . --fix --ignore-path .gitignore && prettier \"**/*.ts\" --write --ignore-path .gitignore",
-    "test": "npm run build && wtr --coverage",
-    "test:watch": "npm run build && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wtr --watch\"",
-    "build": "tsc -b && tsc utils.ts --declaration --emitDeclarationOnly --outDir dist"
+    "test": "wtr --coverage",
+    "test:watch": "wtr --watch --coverage",
+    "doc": "npx rimraf doc && typedoc --out doc index.ts",
+    "deploy": "npm run doc && gh-pages --dist 'doc'",
+    "build": "npx rimraf dist && tsc"
   },
   "dependencies": {
     "lit": "^2.0.2"
@@ -23,6 +32,7 @@
     "@typescript-eslint/eslint-plugin": "^5.48.0",
     "@typescript-eslint/parser": "^5.48.0",
     "@web/test-runner": "^0.14.0",
+    "@web/dev-server-esbuild": "^0.4.1",
     "@web/test-runner-playwright": "^0.8.10",
     "concurrently": "^5.3.0",
     "eslint": "^8.31.0",
