@@ -833,18 +833,18 @@ function isSCLTag(tag: string): tag is SCLTag {
 }
 
 /** @returns parent `tagName` s for SCL (2007B4) element tag  */
-export function parentTags(tagName: string): string[] {
+/** export function parentTags(tagName: string): string[] {
   if (!isSCLTag(tagName)) return [];
 
   return tags[tagName].parents;
-}
+} */
 
 /** @returns child `tagName`s for SCL (2007B4) element tag */
-export function childTags(tagName: string): string[] {
+/** export function childTags(tagName: string): string[] {
   if (!isSCLTag(tagName)) return [];
 
   return tags[tagName].children;
-}
+} */
 
 /** @returns Reference for new [[`tag`]] child within [[`parent`]]  or `null` */
 export function getReference(parent: Element, tag: string): Element | null {
