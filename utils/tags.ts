@@ -828,7 +828,7 @@ const tags: Record<
 
 const tagSet = new Set<string>(sCLTags);
 
-function isSCLTag(tag: string): tag is SCLTag {
+export function isSCLTag(tag: string): tag is SCLTag {
   return tagSet.has(tag);
 }
 
