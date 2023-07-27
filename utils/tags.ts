@@ -157,7 +157,7 @@ const sCLTags = [
   'SecPerSamples',
 ] as const;
 
-type SCLTag = (typeof sCLTags)[number];
+export type SCLTag = (typeof sCLTags)[number];
 
 const tBaseNameSequence = ['Text', 'Private'] as const;
 const tNamingSequence = [...tBaseNameSequence] as const;
@@ -833,14 +833,14 @@ export function isSCLTag(tag: string): tag is SCLTag {
 }
 
 /** @returns parent `tagName` s for SCL (2007B4) element tag  */
-/** export function parentTags(tagName: string): string[] {
+export function parentTags(tagName: string): SCLTag[] {
   if (!isSCLTag(tagName)) return [];
 
   return tags[tagName].parents;
-} */
+}
 
 /** @returns child `tagName`s for SCL (2007B4) element tag */
-/** export function childTags(tagName: string): string[] {
+/* export function childTags(tagName: string): string[] {
   if (!isSCLTag(tagName)) return [];
 
   return tags[tagName].children;
