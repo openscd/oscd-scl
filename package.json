@@ -3,7 +3,7 @@
   "description": "Function library for SCL type XML files",
   "license": "Apache-2.0",
   "author": "Dan and Jay",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
