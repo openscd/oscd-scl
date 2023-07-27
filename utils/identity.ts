@@ -50,7 +50,7 @@ function lDeviceIdentity(e: Element): string {
   return `${identity(e.closest('IED')!)}>>${e.getAttribute('inst')}`;
 }
 
-function iEDNameIdentity(e: Element): string {
+function iEDNameIdentity(e: Element): string | number {
   const iedName = e.textContent;
   const [apRef, ldInst, prefix, lnClass, lnInst] = [
     'apRef',
@@ -59,6 +59,7 @@ function iEDNameIdentity(e: Element): string {
     'lnClass',
     'lnInst',
   ].map(name => e.getAttribute(name));
+
   return `${identity(e.parentElement)}>${iedName} ${apRef || ''} ${
     ldInst || ''
   }/${prefix ?? ''} ${lnClass ?? ''} ${lnInst ?? ''}`;
@@ -91,7 +92,7 @@ function extRefIdentity(e: Element): string | number {
   const intAddrIndex = Array.from(
     e.parentElement.querySelectorAll(`ExtRef[intAddr="${intAddr}"]`)
   ).indexOf(e);
-  if (!iedName) return `${parentIdentity}>${intAddr}[${intAddrIndex}]`;
+  if (intAddr) return `${parentIdentity}>${intAddr}[${intAddrIndex}]`;
   const [
     ldInst,
     prefix,
@@ -120,18 +121,27 @@ function extRefIdentity(e: Element): string | number {
     'srcCBName',
   ].map(name => e.getAttribute(name));
 
+  const defaultSrcPrefix = '';
+  const finalSrcPrefix = srcPrefix ?? defaultSrcPrefix;
+
+  const defaultSrcLNInst = '';
+  const finalSrcLNInst = srcLNInst ?? defaultSrcLNInst;
+
   const cbPath = srcCBName
-    ? `${serviceType}:${srcCBName} ${srcLDInst ?? ''}/${srcPrefix ?? ''} ${
-        srcLNClass ?? ''
-      } ${srcLNInst ?? ''}`
+    ? `${serviceType}:${srcCBName} ${srcLDInst}/${finalSrcPrefix} ${srcLNClass} ${finalSrcLNInst}`
     : '';
-  const dataPath = `${iedName} ${ldInst}/${prefix ?? ''} ${lnClass} ${
-    lnInst ?? ''
-  } ${doName} ${daName || ''}`;
-  return `${parentIdentity}>${cbPath ? `${cbPath} ` : ''}${dataPath}${
-    // eslint-disable-next-line no-useless-concat
-    intAddr ? '@' + `${intAddr}` : ''
-  }`;
+
+  const defaultPrefix = '';
+  const finalPrefix = prefix ?? defaultPrefix;
+
+  const defaultLnInst = '';
+  const finalLnInst = lnInst ?? defaultLnInst;
+
+  const defaultDaName = '';
+  const finalDaName = daName || defaultDaName;
+
+  const dataPath = `${iedName} ${ldInst}/${finalPrefix} ${lnClass} ${finalLnInst} ${doName} ${finalDaName}`;
+  return `${parentIdentity}>${cbPath ? `${cbPath} ` : ''}${dataPath}`;
 }
 
 function lNIdentity(e: Element): string {
@@ -166,7 +176,7 @@ function valIdentity(e: Element): string | number {
   const index = Array.from(e.parentElement.children)
     .filter(child => child.getAttribute('sGroup') === sGroup)
     .findIndex(child => child.isSameNode(e));
-  return `${identity(e.parentElement)}>${sGroup ? `${sGroup}.` : ''} ${index}`;
+  return `${identity(e.parentElement)}>${sGroup ? `${sGroup}` : ''} ${index}`;
 }
 
 function connectedAPIdentity(e: Element): string {
@@ -185,7 +195,7 @@ function controlBlockIdentity(e: Element): string {
 
 function physConnIdentity(e: Element): string | number {
   if (!e.parentElement) return NaN;
-  if (!e.parentElement.querySelector('PhysConn[type="RedConn"]')) return NaN;
+
   const pcType = e.getAttribute('type');
   if (
     e.parentElement.children.length > 1 &&
@@ -212,10 +222,12 @@ function enumValIdentity(e: Element): string {
   return `${identity(e.parentElement)}>${e.getAttribute('ord')}`;
 }
 
-function protNsIdentity(e: Element): string {
-  return `${identity(e.parentElement)}>${e.getAttribute('type') || '8-MMS'}\t${
-    e.textContent
-  }`;
+function protNsIdentity(e: Element): string | number {
+  if (!e.parentElement) return NaN;
+
+  const type = e.getAttribute('type');
+
+  return `${identity(e.parentElement)}>${type || '8-MMS'}\t${e.textContent}`;
 }
 
 function sCLIdentity(): string {
@@ -480,9 +492,6 @@ const tags: Record<
   },
   PowerTransformer: {
     identity: namingIdentity,
-  },
-  Private: {
-    identity: () => NaN,
   },
   Process: {
     identity: namingIdentity,
