@@ -50,7 +50,9 @@ function lDeviceIdentity(e: Element): string {
   return `${identity(e.closest('IED')!)}>>${e.getAttribute('inst')}`;
 }
 
-function iEDNameIdentity(e: Element): string {
+function iEDNameIdentity(e: Element): string | number {
+  if (!e.parentElement) return NaN;
+
   const iedName = e.textContent;
   const [apRef, ldInst, prefix, lnClass, lnInst] = [
     'apRef',
@@ -59,9 +61,20 @@ function iEDNameIdentity(e: Element): string {
     'lnClass',
     'lnInst',
   ].map(name => e.getAttribute(name));
+  const index = Array.from(e.parentElement.children)
+    .filter(
+      child =>
+        child.getAttribute('apRef') === apRef &&
+        child.getAttribute('ldInst') === ldInst &&
+        child.getAttribute('prefix') === prefix &&
+        child.getAttribute('lnClass') === lnClass &&
+        child.getAttribute('lnInst') === lnInst
+    )
+    .findIndex(child => child.isSameNode(e));
+
   return `${identity(e.parentElement)}>${iedName} ${apRef || ''} ${
     ldInst || ''
-  }/${prefix ?? ''} ${lnClass ?? ''} ${lnInst ?? ''}`;
+  }/${prefix ?? ''} ${lnClass ?? ''} ${lnInst ?? ''} ${index}`;
 }
 
 function fCDAIdentity(e: Element): string {
@@ -129,8 +142,7 @@ function extRefIdentity(e: Element): string | number {
     lnInst ?? ''
   } ${doName} ${daName || ''}`;
   return `${parentIdentity}>${cbPath ? `${cbPath} ` : ''}${dataPath}${
-    // eslint-disable-next-line no-useless-concat
-    intAddr ? '@' + `${intAddr}` : ''
+    intAddr ? `@${intAddr}` : ''
   }`;
 }
 
@@ -212,10 +224,21 @@ function enumValIdentity(e: Element): string {
   return `${identity(e.parentElement)}>${e.getAttribute('ord')}`;
 }
 
-function protNsIdentity(e: Element): string {
-  return `${identity(e.parentElement)}>${e.getAttribute('type') || '8-MMS'}\t${
+function protNsIdentity(e: Element): string | number {
+  if (!e.parentElement) return NaN;
+
+  const type = e.getAttribute('type');
+
+  const index = Array.from(e.parentElement.children)
+    .filter(
+      child =>
+        child.tagName === e.tagName && child.getAttribute('type') === type
+    )
+    .findIndex(child => child.isSameNode(e));
+
+  return `${identity(e.parentElement)}>${type || '8-MMS'}\t${
     e.textContent
-  }`;
+  }\t${index}`;
 }
 
 function sCLIdentity(): string {

@@ -1,6 +1,14 @@
 import { expect } from '@open-wc/testing';
 
-import { getReference } from './tags.js';
+import { getReference, parentTags } from './tags.js';
+
+describe('parentTag', () => {
+  it('return empty string with non SCL tag', () =>
+    expect(parentTags('LNodeSpec').length).to.equal(0));
+
+  it('return empty all possible parents for SCL tag', () =>
+    expect(parentTags('SDI')).to.deep.equal(['DOI', 'SDI']));
+});
 
 describe('getReference', () => {
   it('returns null for invalid SCL tag', () => {

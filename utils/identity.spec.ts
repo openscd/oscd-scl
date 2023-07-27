@@ -27,7 +27,7 @@ describe('identity', () => {
       KDC: 'IED1>IED1 P1',
       LDevice: 'IED1>>CircuitBreaker_CB1',
       IEDName:
-        'IED1>>CircuitBreaker_CB1>GCB>IED2 P1 CircuitBreaker_CB1/ CSWI 1',
+        'IED1>>CircuitBreaker_CB1>GCB>IED2 P1 CircuitBreaker_CB1/ CSWI 1 0',
       FCDA: 'IED1>>CircuitBreaker_CB1>GooseDataSet1>CircuitBreaker_CB1/ XCBR 1.Pos stVal (ST)',
       ExtRef:
         'IED1>>Disconnectors>DC CSWI 1>GOOSE:GCB CBSW/ LLN0  IED2 CBSW/ XSWI 2 Pos stVal@intAddr',
@@ -44,7 +44,7 @@ describe('identity', () => {
       PhysConn: 'IED1 P1>RedConn',
       P: 'IED1 P1>IP [0]',
       EnumVal: '#Dummy_ctlModel>0',
-      ProtNs: '#Dummy.LLN0.Mod.SBOw>8-MMS\tIEC 61850-8-1:2003',
+      ProtNs: '#Dummy.LLN0.Mod.SBOw>8-MMS\tIEC 61850-8-1:2003\t0',
       Association: 'IED1>P1>IED3 MU01/ LLN0 ',
       LNode: 'IED2 CBSW/ XSWI 3',
     };

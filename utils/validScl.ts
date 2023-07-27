@@ -16,6 +16,7 @@ export const validScl = `<?xml version="1.0" encoding="UTF-8"?>
         		<Private type="dummyType" />
 				<LNode iedName="IED2" ldInst="CBSW" lnClass="LPHD" lnInst="1"/>
 				<LNode iedName="None" lnClass="LLN0" lnType="Dummy.LLN0"/>
+				<LNode iedName="IED2" lnClass="XSWI" lnInst="3"/>
 				<ConductingEquipment type="CBR" name="QA1" desc="coupling field ciscuit breaker"/>
 				<ConductingEquipment type="DIS" name="QB1" desc="busbar disconnector QB1">
 					<LNode iedName="IED2" ldInst="CBSW" lnClass="XSWI" lnInst="2"/>
@@ -135,6 +136,8 @@ export const validScl = `<?xml version="1.0" encoding="UTF-8"?>
                         </DataSet>
 						<GSEControl type="GOOSE" appID="0001" fixedOffs="false" confRev="1" name="GCB" datSet="GooseDataSet1">
 							<IEDName apRef="P1" ldInst="CircuitBreaker_CB1" lnClass="CSWI" lnInst="1">IED2</IEDName>
+							<IEDName apRef="P1" ldInst="CircuitBreaker_CB1" lnClass="CSWI" lnInst="1">IED3</IEDName>
+							<IEDName apRef="P1" ldInst="CircuitBreaker_CB1" lnClass="XCBR" lnInst="1">IED2</IEDName>
 						</GSEControl>
 						<GSEControl type="GOOSE" appID="0003" fixedOffs="false" confRev="1" name="GCB2"/>
 					</LN0>
@@ -184,8 +187,9 @@ export const validScl = `<?xml version="1.0" encoding="UTF-8"?>
 					<LN prefix="DC" lnClass="CSWI" inst="1" lnType="Dummy.CSWI">
 						<Inputs>
 							<ExtRef iedName="IED2" ldInst="CBSW" lnClass="XSWI" lnInst="2" doName="Pos" daName="stVal" serviceType="GOOSE" srcCBName="GCB" srcLDInst="CBSW" srcLNClass="LLN0" intAddr="intAddr"/>
-							<ExtRef iedName="IED2" ldInst="CBSW" lnClass="XSWI" lnInst="2" doName="Pos" daName="q"/>
-							<ExtRef ldInst="CBSW" lnClass="XSWI" lnInst="2" doName="Pos" daName="t" intAddr="stVal-t"/>
+							<ExtRef iedName="IED2" ldInst="CBSW" prefix="" lnClass="XSWI" lnInst="2" doName="Pos" daName="q"/>
+							<ExtRef intAddr="stVal-t" pDO="Pos" pDA="t" pLN="XCBR" serviceType="GOOSE"/>
+							<ExtRef iedName="IED2" ldInst="CBSW" lnClass="XSWI" lnInst="2" doName="Pos" daName="t" intAddr="stVal-t" />
 						</Inputs>
 					</LN>
 					<LN prefix="DC" lnClass="CILO" inst="1" lnType="Dummy.CILO"/>
@@ -280,6 +284,7 @@ export const validScl = `<?xml version="1.0" encoding="UTF-8"?>
 						<Inputs>
 							<ExtRef iedName="IED1" ldInst="Disconnectors" prefix="DC" lnClass="XSWI" lnInst="1" doName="Pos" daName="stVal"/>
 							<ExtRef iedName="IED1" ldInst="Disconnectors" prefix="DC" lnClass="XSWI" lnInst="1" doName="Pos" daName="q"/>
+							<ExtRef iedName="IED1" ldInst="CircuitBreaker_CB1" lnClass="XSWI" lnInst="1" doName="Pos" daName="stVal" srcCBName="GCB" srcLDInst="CircuitBreaker_CB1" srcPrefix="" srcLNClass="LLN0" serviceType="GOOSE" />
 						</Inputs>
 					</LN>
 					<LN lnClass="XSWI" inst="2" lnType="Dummy.XSWI1">
@@ -327,6 +332,7 @@ export const validScl = `<?xml version="1.0" encoding="UTF-8"?>
 						<Inputs>
 							<ExtRef iedName="IED1" ldInst="CircuitBreaker_CB1" prefix="" lnClass="XCBR" lnInst="1" doName="Pos" daName="stVal"/>
 							<ExtRef iedName="IED1" ldInst="CircuitBreaker_CB1" prefix="" lnClass="XCBR" lnInst="1" doName="Pos" daName="q"/>
+							<ExtRef iedName="IED1" ldInst="CircuitBreaker_CB1" lnClass="XSWI" lnInst="1" doName="Pos" daName="t" srcCBName="ReportCb" srcLDInst="Disconnectors" srcPrefix="DC" srcLNClass="XSWI" srcLNInst="1" serviceType="Report" />
 						</Inputs>
 					</LN>
 				</LDevice>
@@ -623,6 +629,7 @@ export const validScl = `<?xml version="1.0" encoding="UTF-8"?>
 			<BDA name="ctlNum" bType="INT8U" />
 			<BDA name="T" bType="Timestamp" />
 			<BDA name="Test" bType="BOOLEAN" />
+			<ProtNs type="8-MMS">IEC 61850-8-1:2003</ProtNs>
 		</DAType>
 		<DAType id="Dummy.LPHD1.Sim.SBOw">
 			<BDA name="ctlVal" bType="BOOLEAN" />
@@ -631,6 +638,7 @@ export const validScl = `<?xml version="1.0" encoding="UTF-8"?>
 			<BDA name="T" bType="Timestamp" />
 			<BDA name="Test" bType="BOOLEAN" />
 			<BDA name="Check" bType="Check" />
+			<ProtNs type="XMPP">IEC 61850-8-2:2021</ProtNs>
 		</DAType>
 		<DAType id="Dummy.LPHD1.Sim.Cancel">
 			<BDA name="ctlVal" bType="BOOLEAN" />
